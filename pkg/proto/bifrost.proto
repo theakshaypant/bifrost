@@ -1,0 +1,57 @@
+syntax = "proto3";
+
+option go_package = "github.com/theakshaypant/bifrost/pkg/proto";
+
+package proto;
+
+import "google/protobuf/timestamp.proto";
+
+service BifrostService{
+    rpc Join(JoinRequest) returns (JoinResponse) {}
+    rpc SendPreprepare(SendPreprepareRequest) returns (SendPreprepareResponse){}
+    rpc Send(SendRequest) returns (SendResponse){}
+    rpc Fetch(FetchRequest) returns (stream FetchResponse){}
+}
+
+message Message{
+    google.protobuf.Timestamp timestamp = 1;
+    string sender = 2;
+    string text = 3;
+}
+
+message JoinRequest{
+    string username = 1;
+    string passcode = 2;
+    string public_key = 3;
+}
+
+message JoinResponse{
+    string response = 1;
+}
+
+message SendPreprepareRequest{
+    string username = 1;
+}
+
+message SendPreprepareResponse{
+    string public_key = 1;
+    string response = 2;
+}
+
+message SendRequest{
+    Message msg = 1;
+    string receiver = 2;
+}
+
+message SendResponse{
+    string response = 1;
+}
+
+message FetchRequest{
+    string username = 1;
+}
+
+message FetchResponse{
+    string response = 1;
+    Message message = 2;
+}
